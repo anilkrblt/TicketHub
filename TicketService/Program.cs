@@ -1,5 +1,11 @@
+using TicketService.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.ConfigureCors();
+
+builder
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
