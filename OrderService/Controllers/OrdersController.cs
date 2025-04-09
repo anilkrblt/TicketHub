@@ -11,6 +11,7 @@ namespace OrderService.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
+        private readonly IServiceManager _serviceManager;
         private readonly OrderDbContext _context;
         private readonly HttpClient _httpClient;
 

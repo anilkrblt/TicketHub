@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TicketService.Repository;
+using TicketService.Repository.Contracts;
+using TicketService.Service;
+using TicketService.Service.Contracts;
 
 namespace TicketService.Extensions
 {
@@ -14,12 +18,10 @@ namespace TicketService.Extensions
             {
                 options.AddPolicy("CorsPolicy", builder =>
                     builder.AllowAnyOrigin()    //   WithOrigins("https://example.com")
-                            .AllowAnyMethod()   //   WithMethods("POST", "GET")
-                            .AllowAnyHeader() //   WithHeaders("accept", "content-type")
+                            .AllowAnyMethod()  
+                            .AllowAnyHeader()); //   WithHeaders("accept", "content-type")
 
-                            .WithExposedHeaders("X-Pagination")); //to enable the client application to read the 
-                                                                  //new X-Pagination  header that we’ve added in our action
-
+                            
 
 
             });
