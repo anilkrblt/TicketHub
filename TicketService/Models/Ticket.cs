@@ -9,6 +9,7 @@ namespace TicketService.Models
 {
     public class Ticket
     {
+        
         [Key]
         public int TicketId { get; set; }
         public decimal Price { get; set; }
