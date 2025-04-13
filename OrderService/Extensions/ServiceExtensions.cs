@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OrderService.Repository;
+using OrderService.Repository.Contracts;
+using OrderService.Service;
+using OrderService.Service.Contracts;
 
 namespace OrderService.Extensions
 {
