@@ -7,6 +7,7 @@ namespace TicketService.Service.Contracts
 {
     public interface IServiceManager
     {
-        
+        ITicketService TicketService { get; }
+
     }
 }

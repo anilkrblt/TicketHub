@@ -14,7 +14,7 @@ namespace TicketService.Models
         public string? Organizer { get; set; }
         public string? Location { get; set; }
         public DateTime EventDate { get; set; }
-        public required ICollection<Ticket> Tickets { get; set; }
+        public ICollection<Ticket>? Tickets { get; set; }
 
     }
 }

@@ -8,7 +8,6 @@ namespace TicketService.Repository
 {
     public class RepositoryManager : IRepositoryManager
     {
-
         private readonly RepositoryContext _repositoryContext;
         private readonly Lazy<ITicketRepository> _ticketRepository;
         public RepositoryManager(RepositoryContext repositoryContext)
@@ -18,7 +17,6 @@ namespace TicketService.Repository
         }
 
         public ITicketRepository Ticket => _ticketRepository.Value;
-
         public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
         
     }

@@ -8,7 +8,6 @@ namespace TicketService.Repository.Contracts
     public interface IRepositoryManager
     {
         ITicketRepository Ticket { get; }
-
         Task SaveAsync();
 
     }

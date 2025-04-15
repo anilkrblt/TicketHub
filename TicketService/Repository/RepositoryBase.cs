@@ -12,6 +12,7 @@ namespace TicketService.Repository
     {
         protected RepositoryContext RepositoryContext;
 
+
         public RepositoryBase(RepositoryContext repositoryContext) => RepositoryContext = repositoryContext;
         public IQueryable<T> FindAll(bool trackChanges) =>
                                         !trackChanges ?

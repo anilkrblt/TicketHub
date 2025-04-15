@@ -20,6 +20,5 @@ namespace TicketService.Repository
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<EventDetails> EventDetails { get; set; }
 
-
     }
 }
