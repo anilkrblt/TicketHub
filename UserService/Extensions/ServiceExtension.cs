@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using UserService.Repository;
 using UserService.Service;
-
 
 namespace UserService.Extensions
 {
@@ -11,9 +9,7 @@ namespace UserService.Extensions
     {
         public static void ConfigureDependencies(this IServiceCollection services)
         {
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserService, UserService.Services.UserService>();
-            services.AddScoped<IAuthService, AuthService>(); 
+            services.AddScoped<IUserService, UserService.Service.UserService>();
         }
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration config)

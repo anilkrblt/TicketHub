@@ -13,20 +13,29 @@ namespace UserService.Repository
             _context = context;
         }
 
-        public async Task AddUserAsync(User user)
+        public async Task<User?> GetUserByIdAsync(int id)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            return await _context.Users.FindAsync(id);
         }
 
-        public async Task<User?> GetByEmailAsync(string email)
+        public async Task<User?> GetUserByEmailAsync(string email)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task<User?> GetByIdAsync(int id)
+        public async Task<List<User>> GetAllUsersAsync()
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Users.ToListAsync();
+        }
+
+        public async Task AddUserAsync(User user)
+        {
+            await _context.Users.AddAsync(user);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }
