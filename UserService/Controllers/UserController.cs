@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using UserService.Models;
 using UserService.Service;
 
@@ -29,21 +27,20 @@ namespace UserService.Controllers
         {
             var user = await _userService.AuthenticateAsync(model.Email, model.Password);
             var token = _userService.GenerateJwtToken(user);
-            return Ok(new { Token = token });
+            return Ok(new { Token = token , User = user});
         }
 
-        [Authorize]
-        [HttpGet("me")]
-        public async Task<ActionResult<User>> GetProfile()
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<User>> GetUser([FromRoute] int id)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            var user = await _userService.GetUserByIdAsync(userId);
+            var user = await _userService.GetUserByIdAsync(id);
             return user == null ? NotFound() : Ok(user);
         }
 
-        [Authorize]
-        [HttpGet("all")]
-        public async Task<ActionResult<List<User>>> GetAll()
+
+
+        [HttpGet]
+        public async Task<ActionResult<List<User>>> GetAllUsers()
         {
             var users = await _userService.GetAllUsersAsync();
             return Ok(users);

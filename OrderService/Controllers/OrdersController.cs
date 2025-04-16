@@ -29,14 +29,14 @@ namespace OrderService.Controllers
 
 
         [HttpGet("{id:int}", Name = "OrderById")]
-        public async Task<IActionResult> GetTicket(int id)
+        public async Task<IActionResult> GetOrder(int id)
         {
             var order = await _service.OrderService.GetOrderAsync(id, trackChanges: false);
             return Ok(order);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTicket([FromBody] OrderForCreationDto order)
+        public async Task<IActionResult> CreateOrder([FromBody] OrderForCreationDto order)
         {
 
             var createdOrder = await _service.OrderService.CreateOrderAsync(order);
