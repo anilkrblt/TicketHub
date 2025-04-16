@@ -1,7 +1,7 @@
 using TicketService.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-
+ // docker-compose up --build
 
 builder.Services.ConfigureCors();
 builder.Services.ConfigureISSIntegration();
