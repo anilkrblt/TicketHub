@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TicketService.Repository;
 using TicketService.Repository.Contracts;
 using TicketService.Service;
@@ -18,10 +19,10 @@ namespace TicketService.Extensions
             {
                 options.AddPolicy("CorsPolicy", builder =>
                     builder.AllowAnyOrigin()    //   WithOrigins("https://example.com")
-                            .AllowAnyMethod()  
+                            .AllowAnyMethod()
                             .AllowAnyHeader()); //   WithHeaders("accept", "content-type")
 
-                            
+
 
 
             });
@@ -37,6 +38,13 @@ namespace TicketService.Extensions
 
         public static void ConfigureServiceManager(this IServiceCollection services) =>
             services.AddScoped<IServiceManager, ServiceManager>();
+
+
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
+            services.AddDbContext<RepositoryContext>(opts =>
+                                                     opts.UseSqlite(configuration.GetConnectionString("sqliteConnection")));
+
+
 
     }
 }

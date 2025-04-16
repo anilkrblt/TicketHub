@@ -1,0 +1,32 @@
+services:
+  ticketservice:
+    build:
+      context: ./TicketService
+    ports:
+      - "5001:80"
+    depends_on:
+      - ticketdb
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Data Source=ticket.db
+
+  orderservice:
+    build:
+      context: ./OrderService
+    ports:
+      - "5002:80"
+    depends_on:
+      - orderdb
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Data Source=order.db
+
+  ticketdb:
+    image: nouchka/sqlite3:latest
+    volumes:
+      - ./TicketService/Data:/data
+
+  orderdb:
+    image: nouchka/sqlite3:latest
+    volumes:
+      - ./OrderService/Data:/data

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using OrderService.Repository;
 using OrderService.Repository.Contracts;
 using OrderService.Service;
@@ -39,6 +40,12 @@ namespace OrderService.Extensions
 
         public static void ConfigureServiceManager(this IServiceCollection services) =>
             services.AddScoped<IServiceManager, ServiceManager>();
+
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
+services.AddDbContext<RepositoryContext>(opts =>
+                                         opts.UseSqlite(configuration.GetConnectionString("sqliteConnection")));
+
+
 
     }
 }

@@ -7,7 +7,7 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureISSIntegration();
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
-
+builder.Services.ConfigureSqlContext(builder.Configuration);
 // sql context
 
 builder.Services.AddControllers();

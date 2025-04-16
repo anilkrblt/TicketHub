@@ -18,7 +18,6 @@ namespace TicketService.Repository
             base.OnModelCreating(modelBuilder);
         }
         public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<EventDetails> EventDetails { get; set; }
 
     }
 }

@@ -23,6 +23,6 @@ namespace TicketService.Repository
         await FindByCondition(c => c.TicketId.Equals(ticketId), trackChanges).SingleOrDefaultAsync();
 
         public async Task<IEnumerable<Ticket>> GetTicketsAsync(bool trackChanges) =>
-        await FindAll(trackChanges).OrderBy(c => c.Price).ToListAsync();
+        await FindAll(trackChanges).OrderBy(t => (double)t.Price).ToListAsync();
     }
 }

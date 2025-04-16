@@ -24,10 +24,14 @@ namespace TicketService.Service
         {
             var ticketEntity = new Ticket
             {
-                CreatedAt = ticket.CreatedAt,
+                CreatedAt = DateTime.Now,
                 Price = ticket.Price,
                 SeatNumber = ticket.SeatNumber,
                 IsSold = ticket.IsSold,
+                EventDate = ticket.EventDate,
+                Location = ticket.Location,
+                Name = ticket.Name,
+                Organizer = ticket.Organizer,
             };
 
             _repository.Ticket.CreateTicket(ticketEntity);
@@ -36,11 +40,14 @@ namespace TicketService.Service
             var ticketToReturn = new TicketDto
             {
                 TicketId = ticketEntity.TicketId,
-                CreatedAt = ticket.CreatedAt,
+                CreatedAt = ticketEntity.CreatedAt,
                 Price = ticket.Price,
                 SeatNumber = ticket.SeatNumber,
                 IsSold = ticket.IsSold,
-
+                EventDate = ticket.EventDate,
+                Location = ticket.Location,
+                Name = ticket.Name,
+                Organizer = ticket.Organizer,
             };
 
 
@@ -69,7 +76,12 @@ namespace TicketService.Service
                 IsSold = ticket.IsSold,
                 Price = ticket.Price,
                 SeatNumber = ticket.SeatNumber,
-                TicketId = ticket.TicketId
+                TicketId = ticket.TicketId,
+                EventDate = ticket.EventDate,
+                Location = ticket.Location,
+                Name = ticket.Name,
+                Organizer = ticket.Organizer,
+
             }).ToList();
 
             return dto;
@@ -89,6 +101,11 @@ namespace TicketService.Service
             ticketDto.Price = ticket.Price;
             ticketDto.SeatNumber = ticket.SeatNumber;
             ticketDto.TicketId = ticket.TicketId;
+            ticketDto.EventDate = ticket.EventDate;
+            ticketDto.Location = ticket.Location;
+            ticketDto.Name = ticket.Name;
+            ticketDto.Organizer = ticket.Organizer;
+
 
             return ticketDto;
         }
@@ -96,10 +113,15 @@ namespace TicketService.Service
         public async Task UpdateTicketAsync(int ticketId, TicketForUpdateDto ticketForUpdateDto, bool trackChanges)
         {
             var ticket = await _repository.Ticket.GetTicketAsync(ticketId, trackChanges);
-            ticket.CreatedAt = ticketForUpdateDto.CreatedAt;
+            ticket.CreatedAt = ticket.CreatedAt;
             ticket.IsSold = ticketForUpdateDto.IsSold;
             ticket.Price = ticketForUpdateDto.Price;
             ticket.SeatNumber = ticketForUpdateDto.SeatNumber;
+            ticket.EventDate = ticketForUpdateDto.EventDate;
+            ticket.Location = ticketForUpdateDto.Location;
+            ticket.Name = ticketForUpdateDto.Name;
+            ticket.Organizer = ticketForUpdateDto.Organizer;
+
 
             await _repository.SaveAsync();
 

@@ -20,7 +20,7 @@ namespace TicketService.ContextFactory
 
             var builder = new DbContextOptionsBuilder<RepositoryContext>()
 
-           .UseSqlite(configuration.GetConnectionString("sqliteConnection"), b => b.MigrationsAssembly("TicketHub"));
+           .UseSqlite(configuration.GetConnectionString("sqliteConnection"), b => b.MigrationsAssembly("OrderService"));
             return new RepositoryContext(builder.Options);
         }
     }
