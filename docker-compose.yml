@@ -1,11 +1,62 @@
 version: '3.8'
+
 services:
   ticketservice:
     build:
       context: ./TicketService
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "5001:80"
+    depends_on:
+      - ticketdb
+    volumes:
+    - ./TicketService/Tickets.db:/app/Tickets.db
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      # Gerekirse diğer ortam değişkenlerinizi buraya ekleyebilirsiniz.
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Data Source=Tickets.db
+
+  userservice:
+    build:
+      context: ./UserService
+      dockerfile: Dockerfile
+    ports:
+      - "5003:80"
+    depends_on:
+      - userdb
+    volumes:
+      - ./UserService/UserService.db:/app/UserService.db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Data Source=UserService.db
+
+  orderservice:
+    build:
+      context: ./OrderService
+      dockerfile: Dockerfile
+    ports:
+      - "5002:80"
+    depends_on:
+      - orderdb
+    volumes:
+    - ./OrderService/Orders.db:/app/Orders.db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Data Source=Orders.db
+
+  ticketdb:
+    image: nouchka/sqlite3:latest
+    volumes:
+      - ./TicketService/Data:/data
+
+  orderdb:
+    image: nouchka/sqlite3:latest
+    volumes:
+      - ./OrderService/Data:/data
+
+  userdb:
+    image: nouchka/sqlite3:latest
+    volumes:
+      - ./UserService/Data:/data
