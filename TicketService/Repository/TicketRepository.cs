@@ -22,7 +22,7 @@ namespace TicketService.Repository
         public async Task<Ticket> GetTicketAsync(int ticketId, bool trackChanges) =>
         await FindByCondition(c => c.TicketId.Equals(ticketId), trackChanges).SingleOrDefaultAsync();
 
-        public async Task<IEnumerable<Ticket>> GetTicketsAsync(int ticketId, bool trackChanges) =>
+        public async Task<IEnumerable<Ticket>> GetTicketsAsync(bool trackChanges) =>
         await FindAll(trackChanges).OrderBy(c => c.Price).ToListAsync();
     }
 }

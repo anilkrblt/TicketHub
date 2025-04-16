@@ -7,7 +7,7 @@ namespace OrderService.Repository.Contracts
 {
     public interface IRepositoryManager
     {
-        IOrderRepository Ticket { get; }
+        IOrderRepository Order { get; }
 
         Task SaveAsync();
 

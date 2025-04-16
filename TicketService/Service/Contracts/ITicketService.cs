@@ -11,7 +11,7 @@ namespace TicketService.Service.Contracts
     {
         Task<IEnumerable<TicketDto>> GetAllTicketsAsync(bool trackChanges);
         Task<TicketDto> GetTicketAsync(int ticketId, bool trackChanges);
-        Task<TicketForCreationDto> CreateTicketAsync(TicketForCreationDto ticketForCreationDto);
+        Task<TicketDto> CreateTicketAsync(TicketForCreationDto ticketForCreationDto);
         Task DeleteTicketAsync(int ticketId, bool trackChanges);
         Task UpdateTicketAsync(int ticketId, TicketForUpdateDto ticketForUpdateDto, bool trackChanges);
 

@@ -15,11 +15,12 @@ namespace OrderService.Models
         public int TicketId { get; set; }
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
         public DateTime OrderDate { get; set; }
+        
     }
-            public enum OrderStatus
-        {
-            Pending,
-            Completed,
-            Cancelled
-        } 
+     public enum OrderStatus
+    {
+        Pending,
+        Completed,
+        Cancelled
+    } 
 }

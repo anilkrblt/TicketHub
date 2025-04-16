@@ -45,7 +45,7 @@ namespace TicketService.Controllers
 
 
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteCompany(int id)
+        public async Task<IActionResult> DeleteTicket(int id)
         {
             await _service.TicketService.DeleteTicketAsync(id, trackChanges: false);
 
@@ -53,7 +53,7 @@ namespace TicketService.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateCompany(int id, [FromBody] TicketForUpdateDto ticket)
+        public async Task<IActionResult> UpdateTicket(int id, [FromBody] TicketForUpdateDto ticket)
         {
 
             await _service.TicketService.UpdateTicketAsync(id, ticket, trackChanges: true);

@@ -7,6 +7,7 @@ namespace OrderService.Service.Contracts
 {
     public interface IServiceManager
     {
-        
+        IOrderService OrderService { get; }
+
     }
 }

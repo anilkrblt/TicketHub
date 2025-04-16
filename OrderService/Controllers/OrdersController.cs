@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OrderService.Dtos;
 using OrderService.Models;
+using OrderService.Service.Contracts;
 
 namespace OrderService.Controllers
 {
@@ -11,93 +13,55 @@ namespace OrderService.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly IServiceManager _serviceManager;
-        private readonly OrderDbContext _context;
-        private readonly HttpClient _httpClient;
+        private readonly IServiceManager _service;
 
-        public OrdersController(OrderDbContext context, IHttpClientFactory httpClientFactory)
+        public OrdersController(IServiceManager service)
         {
-            _context = context;
-            _httpClient = httpClientFactory.CreateClient();
+            _service = service;
         }
 
-        // 1. Yeni sipariş oluştur
+        [HttpGet]
+        public async Task<IActionResult> GetOrders()
+        {
+            var orders = await _service.OrderService.GetAllOrdersAsync(trackChanges: false);
+            return Ok(orders);
+        }
+
+
+        [HttpGet("{id:int}", Name = "OrderById")]
+        public async Task<IActionResult> GetTicket(int id)
+        {
+            var order = await _service.OrderService.GetOrderAsync(id, trackChanges: false);
+            return Ok(order);
+        }
+
         [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromBody] Order order)
+        public async Task<IActionResult> CreateTicket([FromBody] OrderForCreationDto order)
         {
-            order.Status = OrderStatus.Pending;
-            order.OrderDate = DateTime.UtcNow;
 
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
+            var createdOrder = await _service.OrderService.CreateOrderAsync(order);
 
-            // 1. Payment servisine ödeme isteği gönder
-            var paymentRequest = new
-            {
-                OrderId = order.OrderId,
-                UserId = order.UserId,
-                TicketId = order.TicketId,
-                Amount = 100 // örnek sabit ücret, ticket servisinden alınabilir
-            };
-
-            var response = await _httpClient.PostAsJsonAsync("http://paymentservice/api/payments", paymentRequest);
-
-            if (response.IsSuccessStatusCode)
-            {
-                order.Status = OrderStatus.Completed;
-            }
-            else
-            {
-                order.Status = OrderStatus.Cancelled;
-            }
-
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetOrderById), new { id = order.OrderId }, order);
+            return CreatedAtRoute("OrderById", new { id = createdOrder.OrderId },
+           createdOrder);
         }
 
-        // Sipariş durumunu güncelle
-        [HttpPut("{id}/status")]
-        public async Task<IActionResult> UpdateOrderStatus(int id, [FromBody] OrderStatus status)
-        {
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null) return NotFound();
 
-            order.Status = status;
-            await _context.SaveChangesAsync();
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteOrder(int id)
+        {
+            await _service.OrderService.DeleteOrderAsync(id, trackChanges: false);
 
             return NoContent();
         }
-        // sipariş geçmişini listele
-        [HttpGet("user/userId")]
-        public async Task<IActionResult> GetOrderByUser(int userId)
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateOrder(int id, [FromBody] OrderForUpdateDto order)
         {
-            var orders = await _context.Orders
-            .Where(x => x.UserId == userId)
-            .ToListAsync();
-            return Ok(orders);
-        }
-        // Sipariş detaylarını getir ticket ve user bilgileri ile
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrderById(int id)
-        {
-            var order = await _context.Orders.FindAsync(id);
-            if (order == null) return NotFound();
 
-            // Simulated TicketService ve UserService çağrısı (url'leri örnek)
-            var userResponse = await _httpClient.GetStringAsync($"http://userservice/api/users/{order.UserId}");
-            var ticketResponse = await _httpClient.GetStringAsync($"http://ticketservice/api/tickets/{order.TicketId}");
+            await _service.OrderService.UpdateOrderAsync(id, order, trackChanges: true);
 
-            var user = JsonSerializer.Deserialize<object>(userResponse); // gerçek modelle değiştir
-            var ticket = JsonSerializer.Deserialize<object>(ticketResponse); // gerçek modelle değiştir
-
-            return Ok(new
-            {
-                Order = order,
-                User = user,
-                Ticket = ticket
-            });
-
+            return NoContent();
         }
     }
 
